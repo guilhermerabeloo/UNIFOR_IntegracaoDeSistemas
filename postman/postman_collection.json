@@ -1,0 +1,137 @@
+{
+  "info": {
+    "name": "FeiraFlow API - Postman Collection",
+    "description": "Coleção básica para testar os endpoints da API FeiraFlow (desenvolvimento). Ajuste {{base_url}} e {{feiraId}} conforme seu ambiente.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "feiraId",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Root - Página inicial",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/",
+          "host": ["{{base_url}}"],
+          "path": [""]
+        },
+        "description": "Verifica se a API está ativa"
+      }
+    },
+    {
+      "name": "Ping - Healthcheck",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/ping",
+          "host": ["{{base_url}}"],
+          "path": ["ping"]
+        },
+        "description": "Retorna pong! para checar disponibilidade"
+      }
+    },
+    {
+      "name": "Cadastrar Feira",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"descricao\": \"Feira da Unifor\",\n  \"endereco\": \"Av. Washington Soares, 1321 - Edson Queiroz, Fortaleza - CE, 60811-905\",\n  \"dias_funcionamento\": [\"domingo\"],\n  \"horarios_funcionamento\": \"06:00-12:00\"\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/cadastrar_feira",
+          "host": ["{{base_url}}"],
+          "path": ["cadastrar_feira"]
+        },
+        "description": "Cria uma nova feira. Se latitude/longitude não forem informados, o backend tentará preencher via Nominatim."
+      }
+    },
+    {
+      "name": "Cadastrar Feirante",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"descricao\": \"Seu João - Hortifruti\",\n  \"slogan\": \"Produtos frescos\",\n  \"telefone\": \"85999999999\",\n  \"email\": \"seujoao@example.com\",\n  \"ativo\": true\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/cadastrar_feirante",
+          "host": ["{{base_url}}"],
+          "path": ["cadastrar_feirante"]
+        },
+        "description": "Registra um feirante no sistema (sem autenticação nesta versão)."
+      }
+    },
+    {
+      "name": "Buscar Feiras (lista)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/buscar_feiras",
+          "host": ["{{base_url}}"],
+          "path": ["buscar_feiras"]
+        },
+        "description": "Retorna todas as feiras cadastradas."
+      }
+    },
+    {
+      "name": "Feira Overview (clima)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/buscar_feiras/{{feiraId}}/overview",
+          "host": ["{{base_url}}"],
+          "path": ["buscar_feiras", "{{feiraId}}", "overview"]
+        },
+        "description": "Retorna dados da feira e clima (chave OPENWEATHER_KEY necessária). Ajuste a variável {{feiraId}} com o _id da feira."
+      }
+    },
+    {
+      "name": "Buscar Produtos (feirantes + feiras)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/buscar_produtos?produto=Pastel",
+          "host": ["{{base_url}}"],
+          "path": ["buscar_produtos"],
+          "query": [
+            {
+              "key": "produto",
+              "value": "Pastel"
+            }
+          ]
+        },
+        "description": "Busca produtos por descrição ou tag e retorna feirantes e feiras vinculadas."
+      }
+    }
+  ]
+}
